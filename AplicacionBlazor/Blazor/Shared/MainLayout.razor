@@ -2,13 +2,23 @@
 
 <PageTitle>Pizzeria</PageTitle>
 
-<div class="page">
+<div class="page @ObtenerClase()">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
         <div class="top-row px-4">
+
+            Tema
+            <select @onchange="CambiarTema" style=" margin-left: 1rem;">
+                @foreach (var modo in modos)
+                {
+                    <option selected = "@EsSeleccionado(modo)" value = "@modo">@modo</option>
+                }
+
+            </select>
+
             <AuthorizeView>
                 <Authorized>
                     <span class="ml-md-auto">
@@ -31,3 +41,25 @@
         </article>
     </main>
 </div>
+
+@code {
+    private string modoSeleccionado = "Luz";
+    private List<string> modos = new List<string>() { "Luz", "Oscuridad" };
+    private string ObtenerClase()
+    {
+        if (modoSeleccionado == "Luz")
+        {
+            return string.Empty;
+        }
+        else
+        {
+            return "modo-oscuro";
+        }
+    }
+
+    private bool EsSeleccionado(string modo) => modo == modoSeleccionado;
+    private void CambiarTema(ChangeEventArgs e)
+    {
+        modoSeleccionado = e.Value.ToString();
+    }
+}
